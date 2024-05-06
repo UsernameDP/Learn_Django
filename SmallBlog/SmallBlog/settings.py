@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "api.apps.ApiConfig",
     "frontend.apps.FrontendConfig",
-    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -121,7 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "/frontend/static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
+# STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

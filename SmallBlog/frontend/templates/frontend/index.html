@@ -1,20 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <title>SmallBlog</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static "css/style.css"}">
-
-    
+    <link
+      rel="stylesheet"
+      href="{% static 'frontend/css/styles.css' %}"
+    />
   </head>
   <body>
     <div id="main">
       <div id="root"></div>
     </div>
+    <img
+      src="{% static 'frontend/img/test-image.jpg' %}"
+      alt="wha"
+    />
 
-    {% load static %}
-    <script src="{% static "frontend/main.js" %}"></script>
+    <script src="{% static 'frontend/js/main.js' %}"></script>
   </body>
 </html>
