@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "tailwind" : "npx tailwindcss -i ./static/css/index.css -o ./static/css/styles.css --watch",
-    "build": "webpack --mode production && npx tailwindcss -i ./static/css/index.css -o ./static/css/styles.css"
+    "tailwind" : "npx tailwindcss -i ./static/frontend/css/index.css -o ./static/frontend/css/styles.css --watch",
+    "build": "webpack --mode production && npx tailwindcss -i ./static/frontend/css/index.css -o ./static/frontend/css/styles.css"
   },
   "keywords": [],
   "author": "",
