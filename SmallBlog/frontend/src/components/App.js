@@ -1,8 +1,8 @@
-import React from 'react'
 
-function App() {
-    return (
-        <div className="bg-slate-100"> bruh</div>
+const App = () => {
+  return (
+  
+    <button class="bg-black">yes</button>
     )
 }
 
