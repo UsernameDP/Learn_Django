@@ -52,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "frontend.middleware.FrontendMiddleware",
 ]
 
 ROOT_URLCONF = "SmallBlog.urls"
@@ -121,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend", "static")]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend", "static")]
 # STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 # Default primary key field type

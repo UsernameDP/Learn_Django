@@ -554,40 +554,6 @@ video {
   --tw-contain-style:  ;
 }
 
-.container {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
-}
-
 .prose {
   color: var(--tw-prose-body);
   max-width: 65ch;
@@ -1359,62 +1325,6 @@ video {
 
 .duration-500 {
   transition-duration: 500ms;
-}
-
-.placeholder\:p-2::-moz-placeholder {
-  padding: 0.5rem;
-}
-
-.placeholder\:p-2::placeholder {
-  padding: 0.5rem;
-}
-
-.placeholder\:p-4::-moz-placeholder {
-  padding: 1rem;
-}
-
-.placeholder\:p-4::placeholder {
-  padding: 1rem;
-}
-
-.placeholder\:px-1::-moz-placeholder {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-}
-
-.placeholder\:px-1::placeholder {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-}
-
-.placeholder\:py-2::-moz-placeholder {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.placeholder\:py-2::placeholder {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.placeholder\:px-2::-moz-placeholder {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.placeholder\:px-2::placeholder {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.placeholder\:py-4::-moz-placeholder {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.placeholder\:py-4::placeholder {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
 
 .hover\:-translate-x-3:hover {

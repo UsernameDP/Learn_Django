@@ -5,7 +5,11 @@ const Header = () => {
 
   useEffect(() => {
     fetch("/api/authenticate")
-      .catch((err) => console.log(err))
+      .then((response) => {
+        if (!response.ok) throw new Error("failed to authenticate");
+
+        return response;
+      })
       .then((data) => data.json())
       .then((data) => {
         setUsername(data["username"]);

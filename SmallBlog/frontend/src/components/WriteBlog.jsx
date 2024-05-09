@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const WriteBlog = () => {
+  const [authenticated, setIsAuthenticated] = useState(false);
   const [title, setTitle] = useState(""); // State for the title
   const [content, setContent] = useState(""); // State for the content
+
+  const navigate = useNavigate();
 
   // Handler for changes to the title input
   const handleTitleChange = (event) => {
@@ -19,16 +23,40 @@ const WriteBlog = () => {
       method: "POST",
       body: JSON.stringify({ title: title, content: content })
     })
-      .catch((err) => {
-        throw err;
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to post");
+
+        return response;
       })
       .then((data) => {
         return data.json();
       })
-      .then((data) => console.log(data));
+      .then((data) => {
+        navigate("/");
+      });
   };
+  useEffect(() => {
+    fetch("/api/authenticate")
+      .then((response) => {
+        if (!response.ok) {
+          navigate("/");
+          return;
+        }
+        return response;
+      })
+      .catch((err) => {
+        console.error("Failed to authenticate : ", err);
+        console.log("helloo?");
+        navigate("/");
+        return;
+      })
+      .then((data) => data.json())
+      .then((data) => {
+        setIsAuthenticated(true);
+      });
+  }, []);
 
-  return (
+  return authenticated ? (
     <div className="prose mx-auto flex flex-col gap-5">
       <input
         type="text"
@@ -53,6 +81,8 @@ const WriteBlog = () => {
         Submit
       </button>
     </div>
+  ) : (
+    <></>
   );
 };
 

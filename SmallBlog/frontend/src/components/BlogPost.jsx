@@ -8,8 +8,10 @@ const BlogPost = () => {
 
   useEffect(() => {
     fetch(`/api/getPost/${blogID}`)
-      .catch((err) => {
-        throw err;
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`Failed to get post with id : ${blogID}`);
+        return response;
       })
       .then((data) => data.json())
       .then((data) => setBlog(data));

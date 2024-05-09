@@ -44,13 +44,16 @@ def completeLogin(request):
 
 
 def authenticate(request):
-    token = request.session["token"]
-    username = getIonUsername(token)
+    if "token" in request.session:
+        token = request.session["token"]
+        username = getIonUsername(token)
 
-    if username == None:
-        return JsonResponse({"error": "You must authenticate"}, status=405)
+        if username == None:
+            return JsonResponse({"error": "token is invalid"}, status=405)
 
-    return JsonResponse({"username": username})
+        return JsonResponse({"username": username})
+
+    return JsonResponse({"error": "you must authenticate"}, status=405)
 
 
 def getIonUsername(token):
@@ -85,7 +88,7 @@ def addPost(request):
 
             if not all([title, content, token]):
                 return JsonResponse(
-                    {"error": "Missing data or unauthenticated"}, status=400
+                    {"error": "Missing data or unauthenticated"}, status=405
                 )
 
             username = getIonUsername(token)
@@ -94,11 +97,11 @@ def addPost(request):
             return JsonResponse({"message": "successful"}, status=200)
 
         except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
+            return JsonResponse({"error": "Invalid JSON"}, status=405)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
-    return JsonResponse({"error": "Must be a POST method"}, status=400)
+    return JsonResponse({"error": "Must be a POST method"}, status=405)
 
 
 def getPost(request, id):

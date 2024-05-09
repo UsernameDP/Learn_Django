@@ -12,8 +12,10 @@ const SidePopup = () => {
 
   useEffect(() => {
     fetch("/api/authenticate")
-      .catch((err) => {
-        throw err;
+      .then((response) => {
+        if (!response.ok) throw new Error("failed to authenticate");
+
+        return response;
       })
       .then((data) => data.json())
       .then((data) => {
