@@ -16,14 +16,15 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
-    path("", include("frontend.urls")),
+    re_path(r"^.*$", include("frontend.urls")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

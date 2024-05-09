@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from .utils import getAllBlogPosts, getBlogPost, addUser, addBlogPost
 import json
 from dotenv import load_dotenv
@@ -26,22 +27,7 @@ def login(request):
     return HttpResponseRedirect(authorization_url)
 
 
-def getIonUsername(token):
-    if token:
-        oauth.token = token
-        try:
-            profile = oauth.get("https://ion.tjhsst.edu/api/profile")
-
-            return json.loads(profile.content.decode())["ion_username"]
-        except TokenExpiredError as e:
-            args = {"client_id": CLIENT_ID, "client_secret": CLIENT_SECRET}
-            token = oauth.refresh_token("https://ion.tjhsst.edu/oauth/token/", **args)
-            return None
-
-    return None
-
-
-def authenticate(request):
+def completeLogin(request):
     CODE = request.GET.get("code")
     token = oauth.fetch_token(
         "https://ion.tjhsst.edu/oauth/token/", code=CODE, client_secret=CLIENT_SECRET
@@ -57,27 +43,67 @@ def authenticate(request):
     return HttpResponseRedirect("/")
 
 
+def authenticate(request):
+    token = request.session["token"]
+    username = getIonUsername(token)
+
+    if username == None:
+        return JsonResponse({"error": "You must authenticate"}, status=405)
+
+    return JsonResponse({"username": username})
+
+
+def getIonUsername(token):
+    if token:
+        oauth.token = token
+        try:
+            profile = oauth.get("https://ion.tjhsst.edu/api/profile")
+
+            return json.loads(profile.content.decode())["ion_username"]
+        except (
+            TokenExpiredError
+        ) as e:  # NOTE : simply the token expired and you have to login again
+            return None
+
+    return None
+
+
 def test(request):
     pass
 
 
+@csrf_exempt
 def addPost(request):
     if request.method == "POST":
-        raw_data = request.body
-        decoded_data = raw_data.decode("utf-8")
-        json_data = json.loads(decoded_data)
-        token = request.session["token"]
+        try:
+            json_data = json.loads(
+                request.body.decode("utf-8")
+            )  # Decode and load JSON data
+            title = json_data.get("title")
+            content = json_data.get("content")
+            token = request.session.get("token")
 
-        title = json_data["title"]
-        content = json_data["content"]
-        username = getIonUsername(token)
-        addBlogPost(title, content, username)
+            if not all([title, content, token]):
+                return JsonResponse(
+                    {"error": "Missing data or unauthenticated"}, status=400
+                )
+
+            username = getIonUsername(token)
+            addBlogPost(title, content, username)
+
+            return JsonResponse({"message": "successful"}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Must be a POST method"}, status=400)
 
 
-def getPost(request):
-    data = json.loads(request.body)
-    return JsonResponse(getBlogPost(data.blog_post_id))
+def getPost(request, id):
+    return JsonResponse(getBlogPost(pk=id))
 
 
 def getAllPosts(request):
-    return JsonResponse(getBlogPost())
+    return JsonResponse(getAllBlogPosts(), safe=False)

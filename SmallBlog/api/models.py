@@ -12,7 +12,7 @@ class User(models.Model):
 class BlogPost(models.Model):
     title = models.CharField(max_length=250)
     content = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=250)
 
     def __str__(self):
         return self.title
