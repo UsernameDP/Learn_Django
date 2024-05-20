@@ -2,6 +2,9 @@ from .models import User, BlogPost
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.serializers import serialize
 import json
+from django.utils import timezone
+from datetime import timedelta
+import pytz
 
 
 def getUser(username=None, pk=None):
@@ -40,8 +43,15 @@ def getBlogPost(pk):
     title = fields["title"]
     content = fields["content"]
     username = fields["username"]
+    date = fields["date"]
 
-    return {"id": id, "title": title, "content": content, "username": username}
+    return {
+        "id": id,
+        "title": title,
+        "content": content,
+        "username": username,
+        "date": date,
+    }
 
 
 def getAllBlogPosts():
@@ -58,8 +68,15 @@ def getAllBlogPosts():
         title = fields["title"]
         content = fields["content"]
         username = fields["username"]
+        date = fields["date"]
         formatted.append(
-            {"id": id, "title": title, "content": content, "username": username}
+            {
+                "id": id,
+                "title": title,
+                "content": content,
+                "username": username,
+                "date": date,
+            }
         )
 
     return formatted
@@ -68,8 +85,10 @@ def getAllBlogPosts():
 def addBlogPost(title, content, username):
     user = getUser(username=username)
     if user != None:
+        ny_timezone = pytz.timezone("America/New_York")
+        new_date = timezone.now().astimezone(ny_timezone)
         blogpost = BlogPost.objects.create(
-            title=title, content=content, username=username
+            title=title, content=content, username=username, date=new_date.date()
         )
         blogpost.save()
         return True  # Returns True if user was valid

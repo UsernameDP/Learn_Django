@@ -1,7 +1,9 @@
 import React from "react";
 
-const BlogCard = ({ id, title, username, content }) => {
+const BlogCard = ({ id, title, username, content, date }) => {
   const CONTENT_CHAR_CAP = 250;
+
+  console.log(date);
 
   content =
     content.length > CONTENT_CHAR_CAP
@@ -15,6 +17,7 @@ const BlogCard = ({ id, title, username, content }) => {
       </h2>
       <div className="mt-1">
         <h3 className="text-sm opacity-60"> {username}</h3>
+        <h3 className=" text-xs opacity-60"> {date}</h3>
       </div>
       <div className="mt-2 opacity-90">
         <p> {content} </p>

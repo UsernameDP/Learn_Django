@@ -13,6 +13,7 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=250)
     content = models.TextField()
     username = models.CharField(max_length=250)
+    date = models.DateField()
 
     def __str__(self):
         return self.title

@@ -25,6 +25,7 @@ const BlogList = () => {
             title={blog.title}
             username={blog.username}
             content={blog.content}
+            date={blog.date}
           />
         );
       })}

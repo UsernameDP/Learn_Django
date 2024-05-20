@@ -20,7 +20,9 @@ const BlogPost = () => {
   return blog ? (
     <div className="prose mx-auto ">
       <div className="flex flex-col">
-        <h1>{blog.title}</h1> <h2>{blog.username}</h2>
+        <h1>{blog.title}</h1>
+        <h2>{blog.username}</h2>
+        <h3>{blog.date}</h3>
       </div>
       <div className="flex"> {blog.content} </div>
     </div>
