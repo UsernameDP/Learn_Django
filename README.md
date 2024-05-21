@@ -9,3 +9,4 @@
 - `django-celery-results`
 - `django-celery-beat`
 - `pytz`
+- `redis`

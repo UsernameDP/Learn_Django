@@ -1,0 +1,43 @@
+
+services:
+  web:
+      build: .
+      container_name: django
+      command: sh manage.sh
+      volumes:
+          - .:/app
+      working_dir : /app/SmallBlog
+      ports:
+          - "8000:8000"
+      depends_on:
+          - redis
+
+  celery:
+    build: .
+    command: celery -A SmallBlog worker -l info
+    volumes:
+      - .:/app
+    working_dir: /app/SmallBlog
+    depends_on:
+      - web
+      - redis
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+
+  celerybeat:
+    build: .
+    command: celery -A SmallBlog beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    working_dir: /app/SmallBlog
+    depends_on:
+      - web
+      - redis
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+
+  redis:
+      image: "redis:alpine"
+      ports : 
+        - 6379:6379
+
