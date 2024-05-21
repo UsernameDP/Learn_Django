@@ -1,16 +1,15 @@
-
 services:
   web:
-      build: .
-      container_name: django
-      command: sh manage.sh
-      volumes:
-          - .:/app
-      working_dir : /app/SmallBlog
-      ports:
-          - "8000:8000"
-      depends_on:
-          - redis
+    build: .
+    container_name: django
+    command: sh manage.sh
+    volumes:
+      - .:/app
+    working_dir: /app/SmallBlog
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
 
   celery:
     build: .
@@ -23,6 +22,7 @@ services:
       - redis
     environment:
       - CELERY_BROKER=redis://redis:6379/0
+    user: "1000:1000"
 
   celerybeat:
     build: .
@@ -35,9 +35,19 @@ services:
       - redis
     environment:
       - CELERY_BROKER=redis://redis:6379/0
+    user: "1000:1000"
 
   redis:
-      image: "redis:alpine"
-      ports : 
-        - 6379:6379
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data  
 
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
